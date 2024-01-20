@@ -34,7 +34,10 @@ class AppRequestManager: AppRequestHelper {
     
     func fetchMediaFile(urlString: String) async throws -> String {
         
-        guard let url = URL(string: urlString) else { throw ResponseError.invalidURL}
+        let urlStringAdd = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
+        
+        guard let url = URL(string: urlStringAdd ?? "") else { throw ResponseError.invalidURL}
+        
         do {
             let mediaPath = try await self.downloadMedia(url: url)
             return mediaPath

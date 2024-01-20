@@ -10,15 +10,12 @@ import NVActivityIndicatorView
 
 
 class CommonData: NSObject {
-    
-    
-    
 
     static let shared = CommonData()
-
-    
     private var activityView: NVActivityIndicatorView!
     private var blackView = UIView()
+    
+    var openMusicPlayer:(([MusicModelElement], Int) -> ()) = {_,_  in }
     
     
     override init() {
@@ -114,3 +111,29 @@ extension UIView {
         self.layer.shadowRadius = radius
     }
 }
+
+
+
+//On the top of your swift
+  extension UIImage {
+      
+      func getPixelColor(pos: CGPoint) -> UIColor? {
+          
+          
+          if let pixelData = self.cgImage?.dataProvider?.data {
+              let data: UnsafePointer<UInt8> = CFDataGetBytePtr(pixelData)
+              
+              let pixelInfo: Int = ((Int(self.size.width) * Int(pos.y)) + Int(pos.x)) * 4
+              
+              let r = CGFloat(data[pixelInfo]) / CGFloat(255.0)
+              let g = CGFloat(data[pixelInfo+1]) / CGFloat(255.0)
+              let b = CGFloat(data[pixelInfo+2]) / CGFloat(255.0)
+              let a = CGFloat(data[pixelInfo+3]) / CGFloat(255.0)
+              
+              return UIColor(red: r, green: g, blue: b, alpha: a)
+          }
+          
+          return nil
+      }
+  }
+

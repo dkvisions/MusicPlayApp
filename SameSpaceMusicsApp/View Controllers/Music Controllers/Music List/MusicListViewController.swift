@@ -38,16 +38,8 @@ class MusicListViewController: UIViewController {
         
         
         if isFirstTimeViewAppeared {
-            fetchMusicList()
+            viewModel.fetchSong()
             isFirstTimeViewAppeared.toggle()
-        }
-        
-    }
-    
-    
-    func fetchMusicList()  {
-        Task {
-            await viewModel.fetchSong()
         }
         
     }
@@ -84,8 +76,13 @@ class MusicListViewController: UIViewController {
                     tableViewMusicLists.reloadData()
                 }
                 
-            case .failed:
-                sharedCommonObj.removeActivity()
+            case .failed(_):
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .microseconds(400)) { [self] in
+                    addNoDataLabel()
+                    sharedCommonObj.removeActivity()
+                }
+                
                 
             }
             
@@ -114,6 +111,11 @@ class MusicListViewController: UIViewController {
         tableViewMusicLists.dataSource = self
         
     }
+    
+    func playMusic(index: Int) {
+        CommonData.shared.openMusicPlayer(songsModelElemetArray, index)
+        
+    }
 }
 
 extension MusicListViewController: UITableViewDelegate, UITableViewDataSource {
@@ -133,5 +135,9 @@ extension MusicListViewController: UITableViewDelegate, UITableViewDataSource {
         80
     }
     
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        playMusic(index: indexPath.row)
+    }
     
 }

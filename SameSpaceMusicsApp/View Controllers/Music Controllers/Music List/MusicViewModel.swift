@@ -14,16 +14,19 @@ class MusicViewModel {
     var bindData:((ResponseStatus) -> ()) = {_ in }
     
     
-    func fetchSong() async {
+    func fetchSong() {
 
         bindData(.loading)
-        do {
-            let songsModelData = try await AppRequestManager.shared.fetchDataServicePost(MusicModel.self, .songs, httpMethod: .get)
-            songsModelElemetArray = songsModelData.data
-            bindData(.success)
-            
-        } catch {
-            bindData(.failed)
+        
+        Task {
+            do {
+                let songsModelData = try await AppRequestManager.shared.fetchDataServicePost(MusicModel.self, .songs, httpMethod: .get)
+                songsModelElemetArray = songsModelData.data
+                bindData(.success)
+                
+            } catch {
+                bindData(.failed(error.localizedDescription))
+            }
         }
         
     }

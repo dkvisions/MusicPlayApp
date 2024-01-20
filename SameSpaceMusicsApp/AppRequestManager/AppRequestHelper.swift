@@ -10,7 +10,7 @@ import Foundation
 enum ResponseStatus {
     case loading
     case success
-    case failed
+    case failed(String)
 }
 
 enum  ResponseError: Error {
@@ -109,6 +109,8 @@ extension AppRequestHelper {
         
         guard let directory = documentDirectoryForSong else { throw ResponseError.documnentDirectoryNil}
         let destinationUrl = directory.appendingPathComponent(url.lastPathComponent)
+        
+        print(url)
 
         if FileManager().fileExists(atPath: destinationUrl.path)
         {
@@ -123,28 +125,40 @@ extension AppRequestHelper {
                 let (data, response) = try await session.data(for: request)
                 
                 
-                
+                print("Fine 1")
                   if let responseCode = response as? HTTPURLResponse {
                       
+                      print("Fine 2")
                       if responseCode.statusCode == 200 {
                           
+                          print("Fine 3")
                           do {
                               try data.write(to: destinationUrl)
+                              
+                              print("Fine 4")
                               return destinationUrl.path
                               
+                              
+                              
                           } catch {
+                              print("Fine 5 \(error.localizedDescription)")
                               throw error
+                              
                           }
                           
                       } else {
+                          print("Fine 6 \(responseCode.statusCode)")
                           throw ResponseError.error(responseCode.statusCode)
                       }
               
                   } else {
+                      print("Fine 7")
                       throw ResponseError.somthingWentWrong
                   }
                 
             } catch {
+                
+                print("Fine 8")
                 print(error.localizedDescription)
                 throw ResponseError.somthingWentWrong
             }

@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  DashboardViewController.swift
 //  SameSpaceMusicsApp
 //
 //  Created by Rahul Vishwakarma on 18/01/24.
@@ -7,27 +7,7 @@
 
 import UIKit
 
-class CollectionViewMenuCell: UICollectionViewCell {
-    
-    @IBOutlet weak var viewIndication: UIView!
-    @IBOutlet weak var lableMenuName: UILabel!
-    override  func awakeFromNib() {
-        super.awakeFromNib()
-        
-        viewIndication.layer.cornerRadius = 3
-    }
-    
-    func configureCell(_ menuName: String, _ selectedIndex: Int, _ indexPath: IndexPath) {
-        lableMenuName.text = menuName
-        
-        let isSelected = selectedIndex == indexPath.row
-        
-        lableMenuName.font = UIFont.systemFont(ofSize: isSelected ? 16 : 15, weight:  isSelected ? .bold : .regular)
-        viewIndication.backgroundColor =  selectedIndex == indexPath.row ? UIColor(named: "ColorBlackNWhite") : .clear
-    }
-}
-
-class ViewController: UIViewController {
+class DashboardViewController: UIViewController {
     
     
     var isFirstTimeViewDidAppear = true
@@ -54,6 +34,8 @@ class ViewController: UIViewController {
         
         collectionViewSetuUp()
         addControllers()
+        
+        openMusicPlayer()
     }
     
     func addControllers() {
@@ -106,10 +88,30 @@ class ViewController: UIViewController {
         collectionViewMenu.delegate = self
         collectionViewMenu.dataSource = self
     }
+    
+    
+    func openMusicPlayer() {
+        
+        let storyBoard = UIStoryboard(name: musicStoryBoard, bundle: nil)
+        guard let musicControlVC = storyBoard.instantiateViewController(withIdentifier: MusicControlViewController.identifier) as? MusicControlViewController else { return }
+        
+        
+        musicControlVC.modalPresentationStyle = .overFullScreen
+        musicControlVC.modalTransitionStyle = .coverVertical
+        
+        
+        CommonData.shared.openMusicPlayer = { musicModelArray, index in
+            musicControlVC.musicModelElementArray = musicModelArray
+            musicControlVC.currentIndex = index
+            self.present(musicControlVC, animated: true)
+        }
+        
+        
+    }
 }
 
 
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension DashboardViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         menus.count
@@ -120,6 +122,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellIdentifier, for: indexPath) as? CollectionViewMenuCell else { return UICollectionViewCell() }
         
         cell.configureCell(menus[indexPath.row], selectedIndex, indexPath)
+        
         
         return cell
         
@@ -141,7 +144,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
 
 
 
-extension ViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+extension DashboardViewController: UIPageViewControllerDataSource, UIPageViewControllerDelegate {
     
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
