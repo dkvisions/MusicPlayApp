@@ -1,0 +1,32 @@
+{
+  "pins" : [
+    {
+      "identity" : "fspagerview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/WenchaoD/FSPagerView.git",
+      "state" : {
+        "branch" : "master",
+        "revision" : "968f0aaf120b8cb97d12c3a4447daa4926029f67"
+      }
+    },
+    {
+      "identity" : "nvactivityindicatorview",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ninjaprox/NVActivityIndicatorView.git",
+      "state" : {
+        "revision" : "bcb52371f2259254bac6690f92bb474a61768c47",
+        "version" : "5.1.1"
+      }
+    },
+    {
+      "identity" : "sdwebimage",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SDWebImage/SDWebImage.git",
+      "state" : {
+        "revision" : "59730af512c06fb569c119d737df4c1c499e001d",
+        "version" : "5.18.10"
+      }
+    }
+  ],
+  "version" : 2
+}
