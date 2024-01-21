@@ -114,7 +114,6 @@ extension UIView {
 
 
 
-//On the top of your swift
   extension UIImage {
       
       func getPixelColor(pos: CGPoint) -> UIColor? {

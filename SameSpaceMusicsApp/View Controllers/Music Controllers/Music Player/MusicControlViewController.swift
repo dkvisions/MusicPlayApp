@@ -13,6 +13,15 @@ class MusicControlViewController: UIViewController {
     var musicControlViewModel: MusicControlViewModel!
     let gradient: CAGradientLayer = CAGradientLayer()
     
+    let sharedAv = MusicControllAVPlayer.shared
+    
+    var playingMusicIndex = -1
+    
+    var isPlayButton = true
+    var imagePlayName = "play"
+    var imagePauseName = "pause"
+    var isMusicPlaying = false
+    
     //------------
     var musicModelElementArray: [MusicModelElement]!
     var currentIndex = 0
@@ -43,7 +52,6 @@ class MusicControlViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
         musicControlViewModel = MusicControlViewModel()
         addSwipDownGeture()
         addGestures()
@@ -57,7 +65,14 @@ class MusicControlViewController: UIViewController {
         super.viewDidAppear(animated)
         
         if isFirstTimeViewDidAppear {
+            isFirstTimeViewDidAppear = false
             setupFSPagerView()
+            setUpUI()
+            
+        } else if playingMusicIndex != currentIndex {
+            DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(600)) { [self] in
+                pagerView.scrollToItem(at: currentIndex, animated: true)
+            }
             setUpUI()
         }
     }
@@ -67,10 +82,10 @@ class MusicControlViewController: UIViewController {
     
     func setUpUI() {
         
+        print("iiii")
         let data = musicModelElementArray[currentIndex]
         labelTitle.text = data.name
         labelDescription.text = data.artist
-        
         fetchMusic(index: currentIndex)
     }
     //------------------------------------------
@@ -101,16 +116,35 @@ class MusicControlViewController: UIViewController {
     //----------------------------------------------------
 
     @objc func dismissController() {
+        
+        let transition: CATransition = CATransition()
+        transition.duration = 1
+        transition.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+        transition.type = CATransitionType.reveal
+        transition.subtype = CATransitionSubtype.fromBottom
+        self.view.window!.layer.add(transition, forKey: nil)
         self.dismiss(animated: true)
     }
     
     @objc func playPauseTap() {
-        print("playPauseTap")
+        
+        guard isMusicPlaying else { return }
+        isPlayButton.toggle()
+        print(isPlayButton)
+        imagePlayPause.image = UIImage(named: isPlayButton ? imagePauseName : imagePlayName)
+        isPlayButton ? sharedAv.play() : sharedAv.pause()
+    }
+    
+    func playButtonState(playState: Bool) {
+        isPlayButton = playState
+        imagePlayPause.image = UIImage(named: isPlayButton ? imagePauseName : imagePlayName)
     }
     
     @objc func backPress() {
         
         guard musicModelElementArray.count > 0 else { return }
+        
+        sharedAv.pause()
         let preIndex = currentIndex > 0 ? currentIndex - 1 : musicModelElementArray.count - 1
         currentIndex = preIndex
         self.pagerView.scrollToItem(at: preIndex, animated: true)
@@ -124,6 +158,8 @@ class MusicControlViewController: UIViewController {
     @objc func nextPress() {
         
         guard musicModelElementArray.count > 0 else { return }
+        sharedAv.pause()
+
         let nextIndex = currentIndex < musicModelElementArray.count - 1 ? currentIndex + 1 : 0
         currentIndex = nextIndex
         self.pagerView.scrollToItem(at: nextIndex, animated: true)
@@ -158,7 +194,6 @@ class MusicControlViewController: UIViewController {
     //------------------------------------------
     func fetchMusic(index: Int) {
         musicControlViewModel.fetchMusic(url: musicModelElementArray[index].url)
-        
     }
     
     func bindViewModel() {
@@ -168,6 +203,8 @@ class MusicControlViewController: UIViewController {
             switch status {
             case .loading:
                 
+                isMusicPlaying = false
+                playButtonState(playState: false)
                 DispatchQueue.main.async { [weak self] in
                     guard let self = self else { return }
                     sharedCommonObj.addActivity(view: self.view)
@@ -175,19 +212,45 @@ class MusicControlViewController: UIViewController {
             case .success:
                 
                 sharedCommonObj.removeActivity()
-                DispatchQueue.main.async { [weak self] in
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .microseconds(400)) { [weak self] in
+                    
                     guard let self = self else { return }
+                    sharedCommonObj.removeActivity()
+                    playMusicAv(path: musicControlViewModel.filePath)
                     print(musicControlViewModel.filePath)
                 }
                 
             case .failed(_):
                 DispatchQueue.main.asyncAfter(deadline: .now() + .microseconds(400)) { [self] in
                     sharedCommonObj.removeActivity()
+                    
                 }
                 
             }
-            
         }
+        
+        MusicControllAVPlayer.shared.didFinishPlaying = { _ in
+            self.playButtonState(playState: false)
+        }
+    }
+    
+    
+    func playMusicAv(path: String) {
+        
+        do {
+            try MusicControllAVPlayer.shared.startMusicAvPlayer(path: path)
+            
+            isMusicPlaying = true
+            playButtonState(playState: true)
+            
+            playingMusicIndex = currentIndex
+            
+        } catch {
+            isMusicPlaying = false
+            playButtonState(playState: false)
+        }
+        
     }
 }
 
@@ -210,6 +273,7 @@ extension MusicControlViewController: FSPagerViewDataSource, FSPagerViewDelegate
         print("currentIndex \(pagerView.currentIndex)")
         
         currentIndex = pagerView.currentIndex
+        sharedAv.pause()
         setUpUI()
         
         getSetColor(index: currentIndex)
@@ -260,3 +324,6 @@ extension MusicControlViewController {
     }
     
 }
+
+
+

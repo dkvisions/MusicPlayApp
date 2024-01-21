@@ -12,6 +12,8 @@ class DashboardViewController: UIViewController {
     
     var isFirstTimeViewDidAppear = true
     let musicStoryBoard = "MusicStoryBoard"
+    var musicControlVC: MusicControlViewController?
+    
     //--------------Bottom Menu Collection View--------------
     
     var menus = ["For You", "Top Tracks"]
@@ -91,22 +93,23 @@ class DashboardViewController: UIViewController {
     
     
     func openMusicPlayer() {
-        
+   
         let storyBoard = UIStoryboard(name: musicStoryBoard, bundle: nil)
-        guard let musicControlVC = storyBoard.instantiateViewController(withIdentifier: MusicControlViewController.identifier) as? MusicControlViewController else { return }
         
+        if musicControlVC == nil {
+            musicControlVC = storyBoard.instantiateViewController(withIdentifier: MusicControlViewController.identifier) as? MusicControlViewController
+            
+        }
+        guard let musicControlVC = musicControlVC else { return }
         
         musicControlVC.modalPresentationStyle = .overFullScreen
         musicControlVC.modalTransitionStyle = .coverVertical
-        
         
         CommonData.shared.openMusicPlayer = { musicModelArray, index in
             musicControlVC.musicModelElementArray = musicModelArray
             musicControlVC.currentIndex = index
             self.present(musicControlVC, animated: true)
         }
-        
-        
     }
 }
 

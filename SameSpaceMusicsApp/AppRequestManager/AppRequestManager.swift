@@ -36,8 +36,10 @@ class AppRequestManager: AppRequestHelper {
         
         let urlStringAdd = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
-        guard let url = URL(string: urlStringAdd ?? "") else { throw ResponseError.invalidURL}
+        print(urlStringAdd ?? "no", "kuchh")
+        guard let url = URL(string: urlStringAdd ?? "") else { throw ResponseError.invalidURL }
         
+        print(url)
         do {
             let mediaPath = try await self.downloadMedia(url: url)
             return mediaPath

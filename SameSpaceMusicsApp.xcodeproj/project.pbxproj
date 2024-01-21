@@ -19,6 +19,7 @@
 		86109F0C2B5B966D00F9192E /* MusicListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86109F0B2B5B966D00F9192E /* MusicListViewController.swift */; };
 		86109F0F2B5B968800F9192E /* MusicListTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 86109F0D2B5B968800F9192E /* MusicListTableViewCell.swift */; };
 		86109F102B5B968800F9192E /* MusicListTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 86109F0E2B5B968800F9192E /* MusicListTableViewCell.xib */; };
+		864F5E712B5CF56200389BC7 /* MusicControllAVPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 864F5E702B5CF56200389BC7 /* MusicControllAVPlayer.swift */; };
 		867AE6862B5BA9470013B8C3 /* AppRequestHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867AE6842B5BA9470013B8C3 /* AppRequestHelper.swift */; };
 		867AE6872B5BA9470013B8C3 /* AppRequestManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867AE6852B5BA9470013B8C3 /* AppRequestManager.swift */; };
 		867AE6892B5BB1330013B8C3 /* MusicModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 867AE6882B5BB1330013B8C3 /* MusicModel.swift */; };
@@ -46,6 +47,7 @@
 		86109F0B2B5B966D00F9192E /* MusicListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicListViewController.swift; sourceTree = "<group>"; };
 		86109F0D2B5B968800F9192E /* MusicListTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicListTableViewCell.swift; sourceTree = "<group>"; };
 		86109F0E2B5B968800F9192E /* MusicListTableViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MusicListTableViewCell.xib; sourceTree = "<group>"; };
+		864F5E702B5CF56200389BC7 /* MusicControllAVPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicControllAVPlayer.swift; sourceTree = "<group>"; };
 		867AE6842B5BA9470013B8C3 /* AppRequestHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppRequestHelper.swift; sourceTree = "<group>"; };
 		867AE6852B5BA9470013B8C3 /* AppRequestManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppRequestManager.swift; sourceTree = "<group>"; };
 		867AE6882B5BB1330013B8C3 /* MusicModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicModel.swift; sourceTree = "<group>"; };
@@ -155,6 +157,7 @@
 			children = (
 				867AE6942B5BF2360013B8C3 /* MusicControlViewController.swift */,
 				867AE6992B5C00E40013B8C3 /* MusicControlViewModel.swift */,
+				864F5E702B5CF56200389BC7 /* MusicControllAVPlayer.swift */,
 			);
 			path = "Music Player";
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				867AE69A2B5C00E40013B8C3 /* MusicControlViewModel.swift in Sources */,
 				86109F0F2B5B968800F9192E /* MusicListTableViewCell.swift in Sources */,
 				867AE6952B5BF2360013B8C3 /* MusicControlViewController.swift in Sources */,
+				864F5E712B5CF56200389BC7 /* MusicControllAVPlayer.swift in Sources */,
 				867AE68B2B5BB1550013B8C3 /* MusicViewModel.swift in Sources */,
 				867AE6872B5BA9470013B8C3 /* AppRequestManager.swift in Sources */,
 				86109F042B59841E00F9192E /* RequestUrls.swift in Sources */,

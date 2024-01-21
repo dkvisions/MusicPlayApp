@@ -17,16 +17,19 @@ class MusicControlViewModel {
     
     func fetchMusic(url: String) {
         
+        
+        print("Whats")
         bind(.loading)
         
         Task {
             do {
-                let filepathOfMusic = try await AppRequestManager.shared.fetchMediaFile(urlString: "")
+                let filepathOfMusic = try await AppRequestManager.shared.fetchMediaFile(urlString: url)
                 filePath = filepathOfMusic
                 bind(.success)
                 
+                print("Whats v")
             } catch {
-            
+                print("Whats s")
                 bind(.failed(error.localizedDescription))
             }
         }
