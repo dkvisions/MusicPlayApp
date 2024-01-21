@@ -106,10 +106,10 @@
                                                         <rect key="frame" x="20" y="30" width="388" height="4"/>
                                                         <subviews>
                                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="syF-rl-RKJ">
-                                                                <rect key="frame" x="0.0" y="0.0" width="230" height="4"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="0.0" height="4"/>
                                                                 <color key="backgroundColor" name="ColorBlackNWhite"/>
                                                                 <constraints>
-                                                                    <constraint firstAttribute="width" constant="230" id="nYe-VB-43w"/>
+                                                                    <constraint firstAttribute="width" id="nYe-VB-43w"/>
                                                                 </constraints>
                                                             </view>
                                                         </subviews>
@@ -212,6 +212,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="WidthOfProgressView" destination="nYe-VB-43w" id="MaM-Mu-qDC"/>
                         <outlet property="curentTime" destination="0ho-04-zJy" id="81P-l2-nP2"/>
                         <outlet property="imageNext" destination="T5h-6m-5dO" id="7pd-Gd-gP8"/>
                         <outlet property="imagePlayPause" destination="haN-EG-4qR" id="dE6-Hs-fuy"/>
@@ -234,7 +235,7 @@
     <resources>
         <image name="FarwardPlay" width="44" height="44"/>
         <image name="backwardPlay" width="44" height="44"/>
-        <image name="pause" width="44" height="44"/>
+        <image name="pause" width="64" height="64"/>
         <namedColor name="ColorBlackNWhite">
             <color red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>

@@ -36,7 +36,6 @@ class AppRequestManager: AppRequestHelper {
         
         let urlStringAdd = urlString.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)
         
-        print(urlStringAdd ?? "no", "kuchh")
         guard let url = URL(string: urlStringAdd ?? "") else { throw ResponseError.invalidURL }
         
         print(url)

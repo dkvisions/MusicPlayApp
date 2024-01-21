@@ -124,41 +124,35 @@ extension AppRequestHelper {
             do {
                 let (data, response) = try await session.data(for: request)
                 
-                
-                print("Fine 1")
                   if let responseCode = response as? HTTPURLResponse {
-                      
-                      print("Fine 2")
+                    
                       if responseCode.statusCode == 200 {
-                          
-                          print("Fine 3")
+                        
                           do {
                               try data.write(to: destinationUrl)
-                              
-                              print("Fine 4")
+                           
                               return destinationUrl.path
                               
                               
                               
                           } catch {
-                              print("Fine 5 \(error.localizedDescription)")
+                           
                               throw error
                               
                           }
                           
                       } else {
-                          print("Fine 6 \(responseCode.statusCode)")
+                          
                           throw ResponseError.error(responseCode.statusCode)
                       }
               
                   } else {
-                      print("Fine 7")
+                     
                       throw ResponseError.somthingWentWrong
                   }
                 
             } catch {
-                
-                print("Fine 8")
+              
                 print(error.localizedDescription)
                 throw ResponseError.somthingWentWrong
             }
@@ -183,7 +177,7 @@ extension AppRequestHelper {
                 
             } else {
                 // A file with the same name exists, handle appropriately
-                throw NSError(domain: "YourDomain", code: 1001, userInfo: [NSLocalizedDescriptionKey: "A file with the same name exists at the specified path."])
+                throw NSError(domain: "", code: 1001, userInfo: [NSLocalizedDescriptionKey: "A file with the same name exists at the specified path."])
             }
         } else {
             // Folder does not exist, create it

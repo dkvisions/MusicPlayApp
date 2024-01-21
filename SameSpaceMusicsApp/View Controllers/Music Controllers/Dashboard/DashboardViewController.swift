@@ -9,6 +9,10 @@ import UIKit
 
 class DashboardViewController: UIViewController {
     
+    @IBOutlet weak var labelSongsName: UILabel!
+    @IBOutlet weak var viewMusicPauseConaitner: UIView!
+    @IBOutlet weak var imageCoverMusic: UIImageView!
+    @IBOutlet weak var imagePause: UIImageView!
     
     var isFirstTimeViewDidAppear = true
     let musicStoryBoard = "MusicStoryBoard"
@@ -38,7 +42,79 @@ class DashboardViewController: UIViewController {
         addControllers()
         
         openMusicPlayer()
+        addGesture()
+        bindData()
     }
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        
+        if isFirstTimeViewDidAppear {
+            pageViewControllerSetUp()
+            collectionViewMenu.addShadow(location: .top)
+            imageCoverMusic.layer.cornerRadius = imageCoverMusic.frame.width/2
+        }
+    }
+    
+    
+    
+    
+    func bindData() {
+        
+        viewMusicPauseConaitner.isHidden = true
+        MusicControllAVPlayer.shared.isMusicStillPlaying = { [self] image, songsName, status, color in
+            
+            if status {
+                
+                viewMusicPauseConaitner.isHidden = false
+                viewMusicPauseConaitner.backgroundColor = color
+                imageCoverMusic.image = image
+                labelSongsName.text = songsName
+                
+                
+            } else {
+                
+                viewMusicPauseConaitner.isHidden = true
+                
+            }
+        }
+        
+        MusicControllAVPlayer.shared.didFinishPlayingDash = { [weak self] in
+            guard let self = self else { return }
+            viewMusicPauseConaitner.isHidden = true
+        }
+    }
+    
+    
+    func addGesture() {
+        let pauseTapGesture = UITapGestureRecognizer(target: self, action: #selector(pauseTap))
+        imagePause.isUserInteractionEnabled = true
+        imagePause.addGestureRecognizer(pauseTapGesture)
+        
+        
+        let swipUp = UISwipeGestureRecognizer(target: self, action: #selector(swipUpScrolled))
+        swipUp.direction = .up
+        
+        viewMusicPauseConaitner.addGestureRecognizer(swipUp)
+    }
+    
+    @objc func swipUpScrolled() {
+        
+        if musicControlVC != nil {
+            self.present(musicControlVC!, animated: true)
+        }
+    }
+    
+    @objc func pauseTap() {
+        MusicControllAVPlayer.shared.pause()
+        
+        UIView.animate(withDuration: 0.6) {
+            self.viewMusicPauseConaitner.isHidden = true
+        }
+    }
+    
     
     func addControllers() {
         
@@ -50,17 +126,6 @@ class DashboardViewController: UIViewController {
         
         controllers.append(contentsOf: [forYouController, topPicksViewController])
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        
-        if isFirstTimeViewDidAppear {
-            pageViewControllerSetUp()
-            collectionViewMenu.addShadow(location: .top)
-        }
-    }
-    
     
     func pageViewControllerSetUp() {
         

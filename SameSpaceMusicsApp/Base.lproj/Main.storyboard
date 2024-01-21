@@ -91,18 +91,61 @@
                                     </collectionView>
                                 </subviews>
                             </stackView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XUB-Sa-ZLp">
+                                <rect key="frame" x="0.0" y="678" width="393" height="80"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="PlaceholderImage" translatesAutoresizingMaskIntoConstraints="NO" id="OiU-MT-ZZa">
+                                        <rect key="frame" x="20" y="10" width="60" height="60"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="60" id="Fns-FH-B0k"/>
+                                            <constraint firstAttribute="height" constant="60" id="hO3-aE-0FH"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5lk-py-Ipd">
+                                        <rect key="frame" x="95" y="25.666666666666629" width="218" height="28.666666666666671"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
+                                        <nil key="textColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pause" translatesAutoresizingMaskIntoConstraints="NO" id="7hX-Zb-oeH">
+                                        <rect key="frame" x="323" y="15" width="50" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="PaJ-eb-Chy"/>
+                                            <constraint firstAttribute="width" constant="50" id="tiJ-VG-hWc"/>
+                                        </constraints>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" systemColor="systemGray5Color"/>
+                                <constraints>
+                                    <constraint firstItem="7hX-Zb-oeH" firstAttribute="centerY" secondItem="XUB-Sa-ZLp" secondAttribute="centerY" id="1J1-dz-uQ3"/>
+                                    <constraint firstAttribute="height" constant="80" id="RTZ-Ee-PIL"/>
+                                    <constraint firstAttribute="trailing" secondItem="7hX-Zb-oeH" secondAttribute="trailing" constant="20" id="dgf-Jf-j4P"/>
+                                    <constraint firstItem="OiU-MT-ZZa" firstAttribute="centerY" secondItem="XUB-Sa-ZLp" secondAttribute="centerY" id="gNx-X6-Pi1"/>
+                                    <constraint firstItem="OiU-MT-ZZa" firstAttribute="leading" secondItem="XUB-Sa-ZLp" secondAttribute="leading" constant="20" id="i89-OH-iIv"/>
+                                    <constraint firstItem="5lk-py-Ipd" firstAttribute="centerY" secondItem="XUB-Sa-ZLp" secondAttribute="centerY" id="rFG-jj-c4w"/>
+                                    <constraint firstItem="7hX-Zb-oeH" firstAttribute="leading" secondItem="5lk-py-Ipd" secondAttribute="trailing" constant="10" id="wHW-15-xgX"/>
+                                    <constraint firstItem="5lk-py-Ipd" firstAttribute="leading" secondItem="OiU-MT-ZZa" secondAttribute="trailing" constant="15" id="zID-Tc-6C0"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="gsa-8O-Q2d" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="3ac-Bo-5xc"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="XUB-Sa-ZLp" secondAttribute="bottom" constant="60" id="73a-wX-Qaj"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="gsa-8O-Q2d" secondAttribute="trailing" id="Dwe-0M-B1u"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="XUB-Sa-ZLp" secondAttribute="trailing" id="TWS-qH-2bG"/>
                             <constraint firstItem="gsa-8O-Q2d" firstAttribute="bottom" secondItem="6Tk-OE-BBY" secondAttribute="bottom" id="nQp-7v-7iT"/>
+                            <constraint firstItem="XUB-Sa-ZLp" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="s2Z-dr-LbR"/>
                             <constraint firstItem="gsa-8O-Q2d" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="wzI-SR-nei"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="collectionViewMenu" destination="fcJ-3r-W51" id="uRA-21-3fy"/>
+                        <outlet property="imageCoverMusic" destination="OiU-MT-ZZa" id="8Ij-Ww-dyC"/>
+                        <outlet property="imagePause" destination="7hX-Zb-oeH" id="yxn-iF-jp4"/>
+                        <outlet property="labelSongsName" destination="5lk-py-Ipd" id="KfU-Ug-rQ3"/>
+                        <outlet property="viewMusicPauseConaitner" destination="XUB-Sa-ZLp" id="mZw-xf-5Kh"/>
                         <outlet property="viewPageControllerContainer" destination="Eqt-mo-wwq" id="kI9-Fy-2Ag"/>
                     </connections>
                 </viewController>
@@ -112,8 +155,13 @@
         </scene>
     </scenes>
     <resources>
+        <image name="PlaceholderImage" width="48" height="48"/>
+        <image name="pause" width="64" height="64"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray5Color">
+            <color red="0.89803921568627454" green="0.89803921568627454" blue="0.91764705882352937" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

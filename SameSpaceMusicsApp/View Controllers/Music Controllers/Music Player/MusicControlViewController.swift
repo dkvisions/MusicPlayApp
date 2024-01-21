@@ -15,7 +15,12 @@ class MusicControlViewController: UIViewController {
     
     let sharedAv = MusicControllAVPlayer.shared
     
+    var currentColor = UIColor()
+    var currentImage = UIImage()
+    
     var playingMusicIndex = -1
+    
+    var timer: Timer?
     
     var isPlayButton = true
     var imagePlayName = "play"
@@ -39,6 +44,7 @@ class MusicControlViewController: UIViewController {
     
     
     @IBOutlet weak var viewProgressContainer: UIView!
+    @IBOutlet weak var WidthOfProgressView: NSLayoutConstraint!
     @IBOutlet weak var viewProgress: UIView!
     @IBOutlet weak var curentTime: UILabel!
     @IBOutlet weak var labelLastPlayTime: UILabel!
@@ -58,6 +64,7 @@ class MusicControlViewController: UIViewController {
         bindViewModel()
         
         
+        
     }
     
     
@@ -72,8 +79,17 @@ class MusicControlViewController: UIViewController {
         } else if playingMusicIndex != currentIndex {
             DispatchQueue.main.asyncAfter(deadline: .now() + .milliseconds(600)) { [self] in
                 pagerView.scrollToItem(at: currentIndex, animated: true)
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + .microseconds(800)) { [self] in
+                    getSetColor(index: currentIndex)
+                }
+ 
             }
             setUpUI()
+        }
+        
+        if isMusicPlaying {
+            labelLastPlayTime.text = sharedAv.getDuration()
         }
     }
     
@@ -81,8 +97,7 @@ class MusicControlViewController: UIViewController {
     //---------
     
     func setUpUI() {
-        
-        print("iiii")
+    
         let data = musicModelElementArray[currentIndex]
         labelTitle.text = data.name
         labelDescription.text = data.artist
@@ -123,6 +138,14 @@ class MusicControlViewController: UIViewController {
         transition.type = CATransitionType.reveal
         transition.subtype = CATransitionSubtype.fromBottom
         self.view.window!.layer.add(transition, forKey: nil)
+
+        
+        if isPlayButton {
+            MusicControllAVPlayer.shared.isMusicStillPlaying(currentImage, labelTitle.text ?? "", true, currentColor)
+        } else {
+            MusicControllAVPlayer.shared.isMusicStillPlaying(currentImage, labelTitle.text ?? "", false, currentColor)
+        }
+        resetTimer()
         self.dismiss(animated: true)
     }
     
@@ -130,9 +153,12 @@ class MusicControlViewController: UIViewController {
         
         guard isMusicPlaying else { return }
         isPlayButton.toggle()
+        
         print(isPlayButton)
         imagePlayPause.image = UIImage(named: isPlayButton ? imagePauseName : imagePlayName)
         isPlayButton ? sharedAv.play() : sharedAv.pause()
+        
+        resetTimer(isStart: false)
     }
     
     func playButtonState(playState: Bool) {
@@ -152,7 +178,7 @@ class MusicControlViewController: UIViewController {
             getSetColor(index: currentIndex)
         }
         setUpUI()
-        
+        resetTimer()
     }
     
     @objc func nextPress() {
@@ -167,6 +193,7 @@ class MusicControlViewController: UIViewController {
             getSetColor(index: currentIndex)
         }
         setUpUI()
+        resetTimer()
     }
 
     //------------------------------------------
@@ -225,13 +252,15 @@ class MusicControlViewController: UIViewController {
                 DispatchQueue.main.asyncAfter(deadline: .now() + .microseconds(400)) { [self] in
                     sharedCommonObj.removeActivity()
                     
+                    resetTimer()
                 }
                 
             }
         }
         
-        MusicControllAVPlayer.shared.didFinishPlaying = { _ in
+        MusicControllAVPlayer.shared.didFinishPlaying = { [self] _ in
             self.playButtonState(playState: false)
+            resetTimer()
         }
     }
     
@@ -239,17 +268,56 @@ class MusicControlViewController: UIViewController {
     func playMusicAv(path: String) {
         
         do {
-            try MusicControllAVPlayer.shared.startMusicAvPlayer(path: path)
-            
+            let duration = try MusicControllAVPlayer.shared.startMusicAvPlayer(path: path)
+            curentTime.text = "0:0"
+            labelLastPlayTime.text = duration
             isMusicPlaying = true
             playButtonState(playState: true)
-            
             playingMusicIndex = currentIndex
+            calcProgressWidth()
             
         } catch {
             isMusicPlaying = false
             playButtonState(playState: false)
         }
+        
+    }
+    
+    
+    func calcProgressWidth() {
+        
+        let widhContainer = viewProgressContainer.frame.width
+        let totalDuration = sharedAv.avPlayer.duration
+        
+        _ = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] timerCurrent in
+            guard let self = self else { return }
+            let currentDuration = sharedAv.avPlayer.currentTime
+            let percentageDuration = currentDuration * 100 / totalDuration
+            WidthOfProgressView.constant = widhContainer * percentageDuration / 100
+           
+            timer = timerCurrent
+            curentTime.text = sharedAv.getDuration(currenTime: true)
+        }
+    }
+    
+    func resetTimer(isStart: Bool = true) {
+        
+        if isStart {
+            
+            timer?.invalidate()
+            curentTime.text = "0:0"
+            labelLastPlayTime.text = "0:0"
+            timer = nil
+            
+        } else {
+        
+            if isPlayButton {
+                calcProgressWidth()
+            } else {
+                timer?.invalidate()
+            }
+        }
+        
         
     }
 }
@@ -270,8 +338,7 @@ extension MusicControlViewController: FSPagerViewDataSource, FSPagerViewDelegate
     }
     
     func pagerViewDidEndDecelerating(_ pagerView: FSPagerView) {
-        print("currentIndex \(pagerView.currentIndex)")
-        
+       
         currentIndex = pagerView.currentIndex
         sharedAv.pause()
         setUpUI()
@@ -308,6 +375,8 @@ extension MusicControlViewController {
            
             if let color1 = image.getPixelColor(pos: CGPoint(x: 5, y: 5)) {
                 
+                currentColor = color1
+                currentImage = image
                 if
                     let color2 = image.getPixelColor(pos: CGPoint(x: imageView.frame.width - 5, y: imageView.frame.height - 5)) {
                     
