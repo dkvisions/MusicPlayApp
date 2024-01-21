@@ -261,6 +261,11 @@ class MusicControlViewController: UIViewController {
         MusicControllAVPlayer.shared.didFinishPlaying = { [self] _ in
             self.playButtonState(playState: false)
             resetTimer()
+            
+            if isMusicPlaying {
+                curentTime.text = sharedAv.getDuration()
+                labelLastPlayTime.text = sharedAv.getDuration()
+            }
         }
     }
     
