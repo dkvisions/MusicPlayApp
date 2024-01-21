@@ -2,7 +2,7 @@
 //  MusicControllAVPlayer.swift
 //  SameSpaceMusicsApp
 //
-//  Created by Aditya Vinay Juvekar on 21/01/24.
+//  Created by Rahul Vishwakarma on 21/01/24.
 //
 
 import Foundation
