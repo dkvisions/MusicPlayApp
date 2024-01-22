@@ -10,7 +10,10 @@ import FSPagerView
 
 class MusicControlViewController: UIViewController {
     
+    
     var musicControlViewModel: MusicControlViewModel!
+    
+    
     let gradient: CAGradientLayer = CAGradientLayer()
     
     let sharedAv = MusicControllAVPlayer.shared
@@ -338,6 +341,7 @@ extension MusicControlViewController: FSPagerViewDataSource, FSPagerViewDelegate
     func pagerView(_ pagerView: FSPagerView, cellForItemAt index: Int) -> FSPagerViewCell {
         
         let cell = pagerView.dequeueReusableCell(withReuseIdentifier: "cell", at: index)
+        
         configureFSPagerCell(cell, musicModelElementArray[index])
         return cell
     }

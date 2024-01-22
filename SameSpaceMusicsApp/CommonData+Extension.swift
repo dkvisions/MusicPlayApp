@@ -15,7 +15,7 @@ class CommonData: NSObject {
     private var activityView: NVActivityIndicatorView!
     private var blackView = UIView()
     
-    var openMusicPlayer:(([MusicModelElement], Int) -> ()) = {_,_  in }
+    var openMusicPlayer:(([MusicModelElement], Int, Bool) -> ()) = {_,_,_  in }
     
     
     override init() {

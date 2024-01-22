@@ -17,6 +17,7 @@ class DashboardViewController: UIViewController {
     var isFirstTimeViewDidAppear = true
     let musicStoryBoard = "MusicStoryBoard"
     var musicControlVC: MusicControlViewController?
+    var musicControlVCTopPicks: MusicControlViewController?
     
     //--------------Bottom Menu Collection View--------------
     
@@ -165,15 +166,31 @@ class DashboardViewController: UIViewController {
             musicControlVC = storyBoard.instantiateViewController(withIdentifier: MusicControlViewController.identifier) as? MusicControlViewController
             
         }
+        
+        if musicControlVCTopPicks == nil {
+            musicControlVCTopPicks = storyBoard.instantiateViewController(withIdentifier: MusicControlViewController.identifier) as? MusicControlViewController
+        }
+        
         guard let musicControlVC = musicControlVC else { return }
+        guard let musicControlVCTopPicks = musicControlVCTopPicks else { return }
         
         musicControlVC.modalPresentationStyle = .overFullScreen
         musicControlVC.modalTransitionStyle = .coverVertical
         
-        CommonData.shared.openMusicPlayer = { musicModelArray, index in
-            musicControlVC.musicModelElementArray = musicModelArray
-            musicControlVC.currentIndex = index
-            self.present(musicControlVC, animated: true)
+        CommonData.shared.openMusicPlayer = { musicModelArray, index, isTopPicks in
+            
+            if isTopPicks {
+                musicControlVCTopPicks.musicModelElementArray = musicModelArray
+                musicControlVCTopPicks.currentIndex = index
+                self.present(musicControlVCTopPicks, animated: true)
+                
+            } else {
+                musicControlVC.musicModelElementArray = musicModelArray
+                musicControlVC.currentIndex = index
+                self.present(musicControlVC, animated: true)
+            }
+            
+            
         }
     }
 }

@@ -113,7 +113,7 @@ class MusicListViewController: UIViewController {
     }
     
     func playMusic(index: Int) {
-        CommonData.shared.openMusicPlayer(songsModelElemetArray, index)
+        CommonData.shared.openMusicPlayer(songsModelElemetArray, index, istopTrack)
         
     }
 }
