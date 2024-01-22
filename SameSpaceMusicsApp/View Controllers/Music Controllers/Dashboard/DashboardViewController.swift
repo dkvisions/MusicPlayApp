@@ -177,6 +177,9 @@ class DashboardViewController: UIViewController {
         musicControlVC.modalPresentationStyle = .overFullScreen
         musicControlVC.modalTransitionStyle = .coverVertical
         
+        musicControlVCTopPicks.modalPresentationStyle = .overFullScreen
+        musicControlVCTopPicks.modalTransitionStyle = .coverVertical
+        
         CommonData.shared.openMusicPlayer = { musicModelArray, index, isTopPicks in
             
             if isTopPicks {
@@ -189,8 +192,6 @@ class DashboardViewController: UIViewController {
                 musicControlVC.currentIndex = index
                 self.present(musicControlVC, animated: true)
             }
-            
-            
         }
     }
 }
