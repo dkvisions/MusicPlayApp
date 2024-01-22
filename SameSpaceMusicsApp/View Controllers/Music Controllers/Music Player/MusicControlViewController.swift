@@ -350,6 +350,8 @@ extension MusicControlViewController: FSPagerViewDataSource, FSPagerViewDelegate
        
         currentIndex = pagerView.currentIndex
         sharedAv.pause()
+        
+        resetTimer()
         setUpUI()
         
         getSetColor(index: currentIndex)
